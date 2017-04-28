@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+	<head lang="en">
+		<meta charset="UTF-8">
+		<title>Jack Tan JavaScript Sample Code 2</title>
+
+		<script>
+		/* Sample 1 */
+
+			var foods = {
+			  vegetable: 'carrot',
+			  fruit: 'apple',
+			  grain: 'corn'
+			};
+
+			// Print the key and values with console.log
+			//    vegetable -> carrot
+			//    fruit -> apple
+			//    grain -> corn
+
+			console.log("/----- Sample 1 -------/");
+			// CODE HERE
+			for (var key in foods) {
+				console.log(key + " -> " + foods[key]);
+			}
+
+		/* Sample 2 */
+
+			// Create a Car type as specified below
+
+			// State variables
+			// 		speed
+			//    topSpeed
+
+			// Methods
+			// 		getSpeed() - Return the speed.
+			// 		goFaster(amount) - Add to the speed variable. Resulting speed cannot exceed topSpeed.
+			// 		slowDown(amount) - Subtract from the speed variable. Resulting speed cannot go below 0.
+
+
+			// CODE HERE
+			// Using ES6 class
+			class Car {
+				constructor(topSpeed) {
+					this.speed = 0;
+					if (topSpeed > 0)
+						this.topSpeed = topSpeed;
+					else {
+						this.topSpeed = 0;
+						console.log("Top speed should be greater than 0.");
+					}
+				}
+				getSpeed() {
+					return this.speed;
+				}
+				goFaster(amount) {
+					this.speed += amount;
+					this.speed = this.speed <= this.topSpeed ? this.speed : this.topSpeed;
+					this.speed = this.speed >= 0 ? this.speed : 0; // In case the amount is negative
+				}
+				slowDown(amount) {
+					this.speed -= amount;
+					this.speed = this.speed <= this.topSpeed ? this.speed : this.topSpeed; // In case the amount is negative 
+					this.speed = this.speed >= 0 ? this.speed : 0; 
+				}
+			}
+			
+			// Factory function. Create class by creating an object and returning it
+			/*
+			function Car(topSpeed) {
+				var self = {};
+				
+				// Public field
+				self.speed = 0;
+				self.topSpeed;
+				if (topSpeed > 0)
+					self.topSpeed = topSpeed;
+				else {
+					self.topSpeed = 0;
+					console.log("Top speed should be greater than 0.");
+				}
+				
+				// Public method
+				self.getSpeed = function() {
+					return this.speed;
+				};
+				
+				self.goFaster = function(amount) {
+					this.speed += amount;
+					this.speed = this.speed <= this.topSpeed ? this.speed : this.topSpeed;
+					this.speed = this.speed >= 0 ? this.speed : 0; // In case the amount is negative
+				};
+				
+				self.slowDown = function(amount) {
+					this.speed -= amount;
+					this.speed = this.speed <= this.topSpeed ? this.speed : this.topSpeed; // In case the amount is negative 
+					this.speed = this.speed >= 0 ? this.speed : 0; 
+				};
+				
+				return self;
+			}
+			*/
+			
+			// Using prototype
+			/*
+			function Car(topSpeed) 
+			{
+				this.speed = 0;
+				if (topSpeed > 0)
+				{
+					this.topSpeed = topSpeed;
+				}
+				else
+				{
+					this.topSpeed = 0;
+					console.log("Top speed should be greater than 0.");
+				}
+			}
+			Car.prototype.getSpeed = function()
+			{
+				return this.speed;
+			}
+			Car.prototype.goFaster = function(amount)
+			{
+				this.speed += amount;
+				this.speed = this.speed <= this.topSpeed ? this.speed : this.topSpeed;
+				this.speed = this.speed >= 0 ? this.speed : 0; // In case the amount is negative
+			}
+			Car.prototype.slowDown = function(amount)
+			{
+				this.speed -= amount;
+				this.speed = this.speed <= this.topSpeed ? this.speed : this.topSpeed; // In case the amount is negative 
+				this.speed = this.speed >= 0 ? this.speed : 0;
+			}
+			*/
+			
+			console.log("/----- Sample 2 -------/");
+
+			if(typeof Car !== 'undefined') {
+				var c1 = new Car(25);
+				c1.goFaster(10);
+				c1.slowDown(5);
+				console.log(c1.getSpeed()); // 5
+
+				var c2 = new Car(25);
+				c2.goFaster(25);
+				c2.slowDown(1000);
+				console.log(c2.getSpeed()); // 0
+
+				console.log(c1.goFaster === c2.goFaster); // true if using class or prototype, false if using factory function
+
+				var c3 = new Car(25);
+				c3.goFaster(2500);
+				console.log(c3.getSpeed()); // 25
+			}
+
+		/* Sample 3 */
+
+			var x = {
+			  name: "Jeff",
+
+			  hello: function() {
+				console.log("Hello, " + this.name);
+			  }
+			};
+
+			var y = {
+			  name: "Rafael"
+			};
+
+			// How can we call x.hello, but with "y" as the context so output will be "Rafael"
+
+			console.log("/----- Sample 3 -------/");
+			// CODE HERE
+			// Can use call(), apply(), and bind()
+			x.hello.call(y);
+			//x.hello.apply(y);
+			//x.hello.bind(y)();
+			
+
+		/* Sample 4 */
+
+			console.log("/----- Sample 4 -------/");
+
+			var a = ["one", "two", "three"];
+			console.log(a.indexOf("two")); // output = 1
+
+			a.indexOf = function(val) {
+			  return 'HAHAHA';
+			};
+
+			console.log(a.indexOf("two")); // output = 'HAHAHA'
+
+			// What are some ways to restore the functionality of indexOf?
+			//
+
+			// CODE HERE
+			a.indexOf = Array.prototype.indexOf;
+			//console.log(Array.prototype.indexOf.call(a, "two"));
+
+			console.log(a.indexOf("two")); // output = 1
+
+		/* Sample 5 */
+
+			console.log("/----- Sample 5 -------/");
+
+			function greet(name) {
+			  return 'Hello, ' + name;
+			}
+
+			console.log(greet('Jeff')); // output = 'Hello, Jeff'
+
+			// How can we redefine the greet function such that future calls add punctuation?
+			//
+			// CODE HERE
+			greet = function(name) {
+			  return 'Hello, ' + name + '!';
+			}
+			console.log(greet('Jeff')); // output = 'Hello, Jeff!'
+	
+		</script>	
+		</head>
+	<body>
+</html>
+	
